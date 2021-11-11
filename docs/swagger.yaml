@@ -1,0 +1,671 @@
+basePath: /api/v1.0/
+consumes:
+- application/json
+definitions:
+  request.Auth:
+    properties:
+      pass:
+        example: doe
+        type: string
+        x-order: "2"
+      user:
+        example: john
+        type: string
+        x-order: "1"
+    type: object
+  request.Order:
+    properties:
+      product_id:
+        type: integer
+        x-order: "2"
+      user_id:
+        type: integer
+        x-order: "1"
+    type: object
+  request.Product:
+    properties:
+      name:
+        type: string
+        x-order: "1"
+      serial_number:
+        type: string
+        x-order: "2"
+    type: object
+  request.User:
+    properties:
+      city:
+        type: string
+        x-order: "3"
+      first_name:
+        type: string
+        x-order: "1"
+      last_name:
+        type: string
+        x-order: "2"
+    type: object
+  resources.Auth:
+    properties:
+      token:
+        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZG1pbiI6dHJ1ZSwiZXhwIjoxNjM2OTE0MDU3LCJuYW1lIjoiSm9obiBEb2UifQ.06mOHbHiMGhcTMAH4Y_R7jXVmwY1MytW9midqfj4jDA
+        type: string
+        x-order: "1"
+    type: object
+  resources.JSONResultError:
+    properties:
+      code:
+        example: 404
+        type: integer
+        x-order: "1"
+      data:
+        example: "null"
+        type: string
+        x-order: "3"
+      message:
+        example: Not Found
+        type: string
+        x-order: "2"
+    type: object
+  resources.JSONResultSuccess:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "1"
+      data:
+        items:
+          type: object
+        type: array
+        x-order: "3"
+      message:
+        example: Success
+        type: string
+        x-order: "2"
+    type: object
+  resources.JSONResultSuccessString:
+    properties:
+      code:
+        example: 200
+        type: integer
+        x-order: "1"
+      data:
+        example: "null"
+        type: string
+        x-order: "3"
+      message:
+        example: Success
+        type: string
+        x-order: "2"
+    type: object
+  resources.Order:
+    properties:
+      id:
+        example: 1
+        type: integer
+        x-order: "1"
+      order_date:
+        example: "2021-11-08 22:38:24"
+        type: string
+        x-order: "4"
+      product:
+        $ref: '#/definitions/resources.Product'
+        x-order: "3"
+      user:
+        $ref: '#/definitions/resources.User'
+        x-order: "2"
+    type: object
+  resources.Product:
+    properties:
+      id:
+        example: 1
+        type: integer
+        x-order: "1"
+      name:
+        example: Product One
+        type: string
+        x-order: "1"
+      serial_number:
+        example: "7551561457874455"
+        type: string
+        x-order: "1"
+    type: object
+  resources.User:
+    properties:
+      city:
+        example: Kayseri
+        type: string
+        x-order: "4"
+      first_name:
+        example: Musa
+        type: string
+        x-order: "2"
+      id:
+        example: 1
+        type: integer
+        x-order: "1"
+      last_name:
+        example: UZUN
+        type: string
+        x-order: "3"
+    type: object
+host: gofiberapi.herokuapp.com
+info:
+  contact:
+    email: fiber@fiber.com
+    name: API Support
+  description: This is a sample swagger for Fiber
+  title: Fiber Example API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Default
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/request.Auth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.Auth'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      summary: Auth Login
+      tags:
+      - Auth
+  /orders:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/resources.Order'
+                  type: array
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Show all Orders
+      tags:
+      - Orders
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Default
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/request.Order'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.Order'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create new Order
+      tags:
+      - Orders
+  /orders/{id}:
+    get:
+      consumes:
+      - application/json
+      operationId: "3"
+      parameters:
+      - description: Order ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.Order'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Show a Order
+      tags:
+      - Orders
+  /products:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/resources.Product'
+                  type: array
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Show all Products
+      tags:
+      - Products
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Default
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/request.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.Product'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create new Product
+      tags:
+      - Products
+  /products/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccessString'
+            - properties:
+                data:
+                  type: string
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a Product
+      tags:
+      - Products
+    get:
+      consumes:
+      - application/json
+      operationId: "2"
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.Product'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Show a Product
+      tags:
+      - Products
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: Product ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Default
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/request.Product'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.Product'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update a Product
+      tags:
+      - Products
+  /users:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/resources.User'
+                  type: array
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Show all Users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Default
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/request.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.User'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create new User
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccessString'
+            - properties:
+                data:
+                  type: string
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a User
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      operationId: "1"
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.User'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Show a User
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Default
+        in: body
+        name: default
+        required: true
+        schema:
+          $ref: '#/definitions/request.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultSuccess'
+            - properties:
+                data:
+                  $ref: '#/definitions/resources.User'
+              type: object
+        default:
+          description: error
+          schema:
+            allOf:
+            - $ref: '#/definitions/resources.JSONResultError'
+            - properties:
+                data:
+                  type: string
+              type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update a User
+      tags:
+      - Users
+produces:
+- application/json
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

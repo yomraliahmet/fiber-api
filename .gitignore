@@ -1,0 +1,5 @@
+certs
+.env
+fiberapi.db
+.air.toml
+tmp
