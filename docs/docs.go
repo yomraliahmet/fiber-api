@@ -1106,11 +1106,6 @@ var doc = `{
         "resources.Product": {
             "type": "object",
             "properties": {
-                "name": {
-                    "type": "string",
-                    "x-order": "1",
-                    "example": "Product One"
-                },
                 "serial_number": {
                     "type": "string",
                     "x-order": "1",
@@ -1120,6 +1115,11 @@ var doc = `{
                     "type": "integer",
                     "x-order": "1",
                     "example": 1
+                },
+                "name": {
+                    "type": "string",
+                    "x-order": "1",
+                    "example": "Product One"
                 }
             }
         },
@@ -1170,7 +1170,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "gofiberapi.herokuapp.com",
+	Host:        "localhost:8080",
 	BasePath:    "/api/v1.0/",
 	Schemes:     []string{"http", "https"},
 	Title:       "Fiber Example API",

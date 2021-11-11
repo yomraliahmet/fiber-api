@@ -19,7 +19,7 @@
         },
         "version": "1.0"
     },
-    "host": "gofiberapi.herokuapp.com",
+    "host": "localhost:8080",
     "basePath": "/api/v1.0/",
     "paths": {
         "/auth/login": {

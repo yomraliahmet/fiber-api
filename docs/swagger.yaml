@@ -147,7 +147,7 @@ definitions:
         type: string
         x-order: "3"
     type: object
-host: gofiberapi.herokuapp.com
+host: localhost:8080
 info:
   contact:
     email: fiber@fiber.com

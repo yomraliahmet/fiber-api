@@ -19,7 +19,7 @@ import (
 // @description This is a sample swagger for Fiber
 // @contact.name API Support
 // @contact.email fiber@fiber.com
-// @host gofiberapi.herokuapp.com
+// @host localhost:8080
 // @BasePath /api/v1.0/
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header
